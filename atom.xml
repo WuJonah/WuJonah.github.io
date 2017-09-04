@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Jonah的个人博客</title>
-  <subtitle>一心抖腿，无心工作</subtitle>
+  <title>Jonah博客</title>
+  <subtitle>gogogo! go!</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://wujonah.github.io/"/>
