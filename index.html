@@ -312,7 +312,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/11/09/文件上传，展示和错误处理/" itemprop="url"><!--文件上传，展示和错误处理 --></a></h1>
+                <a class="post-title-link" href="/2017/11/09/文件上传，展示和错误处理/" itemprop="url">文件上传，展示和错误处理</a></h1>
         
 
         <div class="post-meta">
@@ -342,7 +342,7 @@
 
           
           
-             <span id="/2017/11/09/文件上传，展示和错误处理/" class="leancloud_visitors" data-flag-title="<!--文件上传，展示和错误处理 -->">
+             <span id="/2017/11/09/文件上传，展示和错误处理/" class="leancloud_visitors" data-flag-title="文件上传，展示和错误处理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -374,111 +374,14 @@
 
       
         
-          
-            <p><img src="https://i.imgur.com/DNwesyy.png" alt=""></p>
-<p>#文件上传,展示和错误处理功能</p>
-<p>##步骤：</p>
-<p>###1.使用Thymeleaf作为模板引擎，添加页面 profile.html<br><img src="https://i.imgur.com/nlTmjRH.png" alt=""></p>
-<pre><code>&lt;h2 class=&quot;indigo-text center&quot; th:text=&quot;#{profile.title}&quot;&gt;Personal info&lt;/h2&gt;
-
-&lt;div class=&quot;row&quot;&gt;
-
-    &lt;div class=&quot;col m8 s12 offset-m2&quot;&gt;
-        &lt;img th:src=&quot;@{/uploadedPicture}&quot; width=&quot;100&quot; height=&quot;100&quot;/&gt;
-    &lt;/div&gt;
-
-    &lt;div class=&quot;col s12 center red-text&quot; th:text=&quot;${error}&quot; th:if=&quot;${error}&quot;&gt;
-        Error during upload
-    &lt;/div&gt;
-
-    &lt;form th:action=&quot;@{/profile}&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot; class=&quot;col m8 s12 offset-m2&quot;&gt;
-
-        &lt;div class=&quot;input-field col s6&quot;&gt;
-            &lt;input type=&quot;file&quot; id=&quot;file&quot; name=&quot;file&quot;/&gt;
-        &lt;/div&gt;
-
-        &lt;div class=&quot;col s6 center&quot;&gt;
-            &lt;button class=&quot;btn indigo waves-effect waves-light&quot; type=&quot;submit&quot; name=&quot;upload&quot; th:text=&quot;#{upload}&quot;&gt;  &lt;!-- 触发上传 --&gt;
-                Upload
-                &lt;i class=&quot;mdi-content-send right&quot;&gt;&lt;/i&gt;
-            &lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/form&gt;
-&lt;/div&gt; 
-</code></pre><p>###2.后台代码 pictureuploadController<br> <img src="https://i.imgur.com/6NAk6Q2.png" alt=""></p>
-<pre><code>@Autowired   //构造方法
-public PictureUploadController(PicturesUploadProperties uploadProperties, MessageSource messageSource,UserProfileSession userProfileSession ){
-    uploadPath = uploadProperties.getUploadPath();
-    pictures = uploadProperties.getPictures();
-    this.messageSource = messageSource;
-    this.userProfileSession = userProfileSession;
-}
-
-
-@RequestMapping(value = &quot;/uploadedPicture&quot;)   //配置页面响应图片
-public void getUploadedPicture(HttpServletResponse response) throws  IOException{
-  //  ClassPathResource classPathResource = new ClassPathResource(&quot;/images/google.gif&quot;);
-    Resource res = userProfileSession.getPicturePath();
-    if(res == null){
-        res = pictures;
-    }
-    response.setHeader(&quot;Content-Type&quot;, URLConnection.guessContentTypeFromName(res.getFilename()));
-    IOUtils.copy(res.getInputStream(),response.getOutputStream());
-}
-
-@RequestMapping(value = &quot;/profile&quot;,params = &quot;upload&quot;,method = RequestMethod.POST)   //上传功能
-    public String onUpload(@RequestParam MultipartFile file, RedirectAttributes redirectAttributes ) throws IOException {  //RedirectAttributes专门用于重定向之后还能带参数跳转的的工具类
-    if(file.isEmpty()|| !isImage(file)){
-        redirectAttributes.addFlashAttribute(&quot;error&quot;,&quot;Incorrect file. Please upload a picture.&quot;); //带参数重定向
-        return  &quot;redirect:/profile&quot;;
-    }
-    Resource res = copyFileToPic(file);
-    userProfileSession.setPicturePath(res);
-    return &quot;redirect:profile &quot;;
-}
-
-@RequestMapping(&quot;uploadError&quot;)
-public ModelAndView onUploadError(Locale locale){
-    ModelAndView md = new ModelAndView(&quot;profile/uploadPage&quot;);
-    md.addObject(&quot;error&quot;,messageSource.getMessage(&quot;upload.file.too.big&quot;,null,locale));
-    md.addObject(&quot;profileForm&quot;,userProfileSession.toForm());
-    return md;
-}
-
-
-private Resource copyFileToPic(MultipartFile file) throws IOException{
-    String fileExtension = getFileExtension(file.getOriginalFilename());
-    File tempFile = File.createTempFile(&quot;pic&quot;,fileExtension,uploadPath.getFile());
-    try(InputStream in = file.getInputStream() ;
-        OutputStream out = new FileOutputStream(tempFile)){
-        IOUtils.copy(in,out);
-    }
-    return new FileSystemResource(tempFile);
-}
-
-private boolean isImage(MultipartFile file){
-    return file.getContentType().startsWith(&quot;image&quot;);  //getContentType()方法会返回文件的多用途Internet邮件扩展类型。它将会是image/png,image/jpg等，所以判断是否是image开头即可。
-}
-
-private static String getFileExtension(String name){  //返回name的文件格式名如gif,jpg等
-    return   name.substring(name.lastIndexOf(&quot;.&quot;));
-}
-
-@ExceptionHandler(IOException.class)
-public ModelAndView handleIOException(Locale locale){
-    ModelAndView modelAndView = new ModelAndView(&quot;profile/uploadPage&quot;);
-    modelAndView.addObject(&quot;error&quot;,messageSource.getMessage(&quot;upload.io.exception&quot;,null,locale));
-    modelAndView.addObject(&quot;profileForm&quot;,userProfileSession.toForm());
-    return modelAndView;
-}
-</code></pre><p>###3.管理上传属性 <br></p>
-<p>####3.1 定义picturesuploadproperties类<br><br>通过application.properties文件来配置上传目录以及默认用户图片的路径<br><br> @ConfigurationProperties会告诉springboot以一种类型安全的方式，自动映射类路径下所发现的属性（默认情况下，位于application.properties文件中）<br> <img src="https://i.imgur.com/daTOos1.png" alt=""></p>
-<p>####3.2 添加定义picturesuploadproperties类到配置中<br> <img src="https://i.imgur.com/oTsAkCW.png" alt=""></p>
-<p>####3.3 在配置文件中添加属性值<br> ConfigurationProperties属性，uploadPath是在应用的根目录下，pictures位于类路径下<br>upload.pictures.uploadPath=file:./pictures<br>upload.pictures.pictures=classpath:/images/002.jpg </p>
-<p><img src="https://i.imgur.com/mpCAyo4.png" alt=""></p>
-<p>另外的还有一些转换错误信息之类的，下次再说。</p>
-
-          
+          文件上传，展示和错误处理功能实现
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/09/文件上传，展示和错误处理/">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -871,7 +774,7 @@ public ModelAndView handleIOException(Locale locale){
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>

@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="springmvc4," />
 
 
 
@@ -99,22 +99,23 @@
 
 
 
-<meta name="description" content="#文件上传,展示和错误处理功能 ##步骤： ###1.使用Thymeleaf作为模板引擎，添加页面 profile.html &amp;lt;h2 class=&amp;quot;indigo-text center&amp;quot; th:text=&amp;quot;#{profile.title}&amp;quot;&amp;gt;Personal info&amp;lt;/h2&amp;gt;  &amp;lt;div class=&amp;quot;row&amp;qu">
+<meta name="description" content="文件上传，展示和错误处理功能实现">
+<meta name="keywords" content="springmvc4">
 <meta property="og:type" content="article">
-<meta property="og:title" content="&lt;!--文件上传，展示和错误处理 --&gt;">
+<meta property="og:title" content="文件上传，展示和错误处理">
 <meta property="og:url" content="https://wujonah.github.io/2017/11/09/文件上传，展示和错误处理/index.html">
 <meta property="og:site_name" content="Jonah博客">
-<meta property="og:description" content="#文件上传,展示和错误处理功能 ##步骤： ###1.使用Thymeleaf作为模板引擎，添加页面 profile.html &amp;lt;h2 class=&amp;quot;indigo-text center&amp;quot; th:text=&amp;quot;#{profile.title}&amp;quot;&amp;gt;Personal info&amp;lt;/h2&amp;gt;  &amp;lt;div class=&amp;quot;row&amp;qu">
+<meta property="og:description" content="文件上传，展示和错误处理功能实现">
 <meta property="og:image" content="https://i.imgur.com/DNwesyy.png">
 <meta property="og:image" content="https://i.imgur.com/nlTmjRH.png">
 <meta property="og:image" content="https://i.imgur.com/6NAk6Q2.png">
 <meta property="og:image" content="https://i.imgur.com/daTOos1.png">
 <meta property="og:image" content="https://i.imgur.com/oTsAkCW.png">
 <meta property="og:image" content="https://i.imgur.com/mpCAyo4.png">
-<meta property="og:updated_time" content="2017-11-09T05:41:37.297Z">
+<meta property="og:updated_time" content="2017-11-09T05:45:29.458Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="&lt;!--文件上传，展示和错误处理 --&gt;">
-<meta name="twitter:description" content="#文件上传,展示和错误处理功能 ##步骤： ###1.使用Thymeleaf作为模板引擎，添加页面 profile.html &amp;lt;h2 class=&amp;quot;indigo-text center&amp;quot; th:text=&amp;quot;#{profile.title}&amp;quot;&amp;gt;Personal info&amp;lt;/h2&amp;gt;  &amp;lt;div class=&amp;quot;row&amp;qu">
+<meta name="twitter:title" content="文件上传，展示和错误处理">
+<meta name="twitter:description" content="文件上传，展示和错误处理功能实现">
 <meta name="twitter:image" content="https://i.imgur.com/DNwesyy.png">
 
 
@@ -151,7 +152,7 @@
 
 
 
-  <title><!--文件上传，展示和错误处理 --> | Jonah博客</title>
+  <title>文件上传，展示和错误处理 | Jonah博客</title>
   
 
 
@@ -319,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"><!--文件上传，展示和错误处理 --></h1>
+          <h1 class="post-title" itemprop="name headline">文件上传，展示和错误处理</h1>
         
 
         <div class="post-meta">
@@ -349,7 +350,7 @@
 
           
           
-             <span id="/2017/11/09/文件上传，展示和错误处理/" class="leancloud_visitors" data-flag-title="<!--文件上传，展示和错误处理 -->">
+             <span id="/2017/11/09/文件上传，展示和错误处理/" class="leancloud_visitors" data-flag-title="文件上传，展示和错误处理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -366,6 +367,10 @@
           
 
           
+              <div class="post-description">
+                  文件上传，展示和错误处理功能实现
+              </div>
+          
 
         </div>
       </header>
@@ -380,9 +385,8 @@
       
 
       
-        <p><img src="https://i.imgur.com/DNwesyy.png" alt=""></p>
-<p>#文件上传,展示和错误处理功能</p>
-<p>##步骤：</p>
+        <p>#文件上传,展示和错误处理功能<br><img src="https://i.imgur.com/DNwesyy.png" alt=""></p>
+<p>##实现步骤：</p>
 <p>###1.使用Thymeleaf作为模板引擎，添加页面 profile.html<br><img src="https://i.imgur.com/nlTmjRH.png" alt=""></p>
 <pre><code>&lt;h2 class=&quot;indigo-text center&quot; th:text=&quot;#{profile.title}&quot;&gt;Personal info&lt;/h2&gt;
 
@@ -492,10 +496,45 @@ public ModelAndView handleIOException(Locale locale){
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>���ԭ��������������֧�ֽ������Ҽ���������</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat_reward.jpg" alt="Jonah WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay_reward.jpg" alt="Jonah Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springmvc4/" rel="tag"># springmvc4</a>
+          
+        </div>
       
 
       
@@ -609,7 +648,7 @@ public ModelAndView handleIOException(Locale locale){
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
